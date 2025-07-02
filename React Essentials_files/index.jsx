@@ -1,0 +1,12 @@
+import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=8ea6b641"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import __vite__cjsImport1_reactDom_client from "/node_modules/.vite/deps/react-dom_client.js?v=8ea6b641"; const ReactDOM = __vite__cjsImport1_reactDom_client.__esModule ? __vite__cjsImport1_reactDom_client.default : __vite__cjsImport1_reactDom_client;
+import App from "/src/App.jsx?t=1748252467445";
+import "/src/index.css?t=1748251128445";
+const entryPoint = document.getElementById("root");
+ReactDOM.createRoot(entryPoint).render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
+  fileName: "/Users/hyeonm1339/Documents/Practice/01-starting-project/src/index.jsx",
+  lineNumber: 7,
+  columnNumber: 40
+}, this));
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJtYXBwaW5ncyI6IkFBTXVDO0FBTnZDLE9BQU9BLGNBQWM7QUFFckIsT0FBT0MsU0FBUztBQUNoQixPQUFPO0FBRVAsTUFBTUMsYUFBYUMsU0FBU0MsZUFBZSxNQUFNO0FBQ2pESixTQUFTSyxXQUFXSCxVQUFVLEVBQUVJLE9BQU8sdUJBQUMsU0FBRDtBQUFBO0FBQUE7QUFBQTtBQUFBLE9BQUksQ0FBRyIsIm5hbWVzIjpbIlJlYWN0RE9NIiwiQXBwIiwiZW50cnlQb2ludCIsImRvY3VtZW50IiwiZ2V0RWxlbWVudEJ5SWQiLCJjcmVhdGVSb290IiwicmVuZGVyIl0sInNvdXJjZXMiOlsiaW5kZXguanN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdERPTSBmcm9tIFwicmVhY3QtZG9tL2NsaWVudFwiO1xuXG5pbXBvcnQgQXBwIGZyb20gXCIuL0FwcC5qc3hcIjtcbmltcG9ydCBcIi4vaW5kZXguY3NzXCI7XG5cbmNvbnN0IGVudHJ5UG9pbnQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcInJvb3RcIik7XG5SZWFjdERPTS5jcmVhdGVSb290KGVudHJ5UG9pbnQpLnJlbmRlcig8QXBwIC8+KTtcbiJdLCJmaWxlIjoiL1VzZXJzL2h5ZW9ubTEzMzkvRG9jdW1lbnRzL1ByYWN0aWNlLzAxLXN0YXJ0aW5nLXByb2plY3Qvc3JjL2luZGV4LmpzeCJ9
