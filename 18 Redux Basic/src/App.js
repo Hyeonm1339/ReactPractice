@@ -1,10 +1,26 @@
 import Counter from './components/Counter';
+import {Fragment} from "react";
+import Header from "./components/Header";
+import Auth from "./components/Auth";
+import {useSelector} from "react-redux";
+import UserProfile from "./components/UserProfile";
 
 
 function App() {
-  return (
-    <Counter />
-  );
+    const {isAuthenticated} = useSelector(state => {
+        return state.auth
+    })
+    return (
+        <Fragment>
+            <Header></Header>
+            {!isAuthenticated && <Auth/>}
+            {isAuthenticated && <>
+                <UserProfile/>
+                <Counter/>
+            </>}
+        </Fragment>
+    )
+        ;
 }
 
 export default App;
