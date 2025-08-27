@@ -42,17 +42,19 @@
 // 보너스: 모든 /events... 페이지 구성 요소 위에 <EventNavigation> 구성 요소를 추가하는 또 다른 (중첩된) 레이아웃 경로를 추가합니다.
 import {createBrowserRouter, createRoutesFromElements, RouterProvider} from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import EventsPage,{loader as eventsLoader} from "./pages/EventsPage";
-import EventDetailPage from "./pages/EventDetailPage";
-import NewEventPage from "./pages/NewEventPage";
+import EventsPage, {loader as eventsLoader} from "./pages/EventsPage";
+import EventDetailPage, {loader as eventDetailLoader} from "./pages/EventDetailPage";
+import NewEventPage, {action as newEventAction} from "./pages/NewEventPage";
 import EditEventPage from "./pages/EditEventPage";
 import RootLayout from "./pages/RootLayout";
 import EventsRootLayout from "./pages/EventsRootLayout";
+import ErrorPage from "./pages/Error";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout/>,
+        errorElement: <ErrorPage/>,
         children: [
             {index: true, element: <HomePage/>},
             {
@@ -60,9 +62,22 @@ const router = createBrowserRouter([
                     {
                         index: true, element: <EventsPage/>, loader: eventsLoader
                     },
-                    {path: ':eventId', element: <EventDetailPage/>},
-                    {path: 'new', element: <NewEventPage/>},
-                    {path: ':eventId/edit', element: <EditEventPage/>},
+                    {
+                        path: ':eventId',
+                        id: 'event-detail',
+                        loader: eventDetailLoader,
+                        children: [
+                            {
+                                index: true,
+                                element: <EventDetailPage/>,
+                            },
+                            {path: 'edit', element: <EditEventPage/>},
+                        ]
+                    },
+                    {
+                        path: 'new', element: <NewEventPage/>,
+                        action: newEventAction
+                    },
                 ]
             }
         ]

@@ -1,17 +1,30 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useLoaderData, useParams, useRouteLoaderData} from "react-router-dom";
 import EventsNavigation from "../components/EventsNavigation";
+import EventItem from "../components/EventItem";
 
 export default function EventDetailPage() {
 
-    //Link객체로 넘어온 값을 받을수있는 라우터 함수.
-    const params = useParams();
+    const data = useRouteLoaderData('event-detail')
 
-    console.log(params)
+    // const data = useLoaderData();
+    console.log(data)
 
 
     return <>
-        <EventsNavigation/>
-        <h1>Event Details!</h1>
-        <p>Event Id: {params.eventId}</p>
+        <EventItem event={data.event}/>
     </>
+}
+
+export async function loader({request, params}) {
+    const id = params.eventId
+
+    const response = await fetch('http://localhost:8080/events/' + id);
+
+    if (!response.ok) {
+        throw new Error({message: 'Could not fetch details for selected event.'}, {
+            status: 500
+        })
+    } else {
+        return response;
+    }
 }
