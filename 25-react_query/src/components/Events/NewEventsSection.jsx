@@ -1,4 +1,3 @@
-
 import LoadingIndicator from '../UI/LoadingIndicator.jsx';
 import ErrorBlock from '../UI/ErrorBlock.jsx';
 import EventItem from './EventItem.jsx';
@@ -13,10 +12,10 @@ export default function NewEventsSection() {
     //그외에도 다양한 리턴값이 존재
     const {data, isPending, isError, error} = useQuery({
         //실제 요청을 처리할때 사용할 함수를 정의.(프로미스를 반환해야함)
-        queryFn: fetchEvents,
+        queryFn: ({signal, queryKey}) => fetchEvents({signal, ...queryKey[1]}),
         //useQuery를 사용할때 입력한 쿼리키로 데이터를 캐시처리함.(동일한 요청을 전송하면 이전응답을 재사용가능)
         //신규 데이터가 넘어오기 전까지 이전데이터를 사용한다.
-        queryKey: ['events'],
+        queryKey: ['events', {max: 2}],
         //캐시된 데이터가 있을때 업데이트된 데이터를 전송하기전에 대기시간 설정(기본값 0)
         //5000으로 설정시, 화면에 5초이상 머무르고 돌아오는경우에만 재 호출을 한다 와 같은 개념으로 이해.(불필요한 요청 방지)
         staleTime: 5000,

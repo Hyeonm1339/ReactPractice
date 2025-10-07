@@ -14,9 +14,9 @@ export default function FindEventSection() {
     //isLoading - 처음 데이터를 불러올때,(첫렌더링시사용)
     //isPending - 데이터를 요청중일때(refetch)
     const {data,isLoading, isError, error} = useQuery({
-        queryKey: ['events', {search: searchTerm}],
-        queryFn: ({signal}) =>
-            fetchEvents({signal, searchTerm}),
+        queryKey: ['events', {seatchTerm: searchTerm}],
+        queryFn: ({signal,queryKey}) =>
+            fetchEvents({signal, ...queryKey[1]}),
         //최초 화면진입시에는 searchTerm이 undefined이므로, false(쿼리실행X 이후에는 검색을 통해 값이 들어가므로 항시 true값이된다.)
         enabled: searchTerm !== undefined
     })
