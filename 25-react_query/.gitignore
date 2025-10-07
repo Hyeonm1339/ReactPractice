@@ -11,8 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-#빌드소스 제외
-build/*
 
 # Editor directories and files
 .vscode/*
