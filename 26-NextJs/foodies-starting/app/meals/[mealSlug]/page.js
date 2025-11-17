@@ -5,7 +5,7 @@ import {notFound} from "next/navigation";
 
 export default function MealDetailsPage({params}) {
     const meal = getMeal(params.mealSlug);
-    
+
     //넥스트에서 지원하는 기본함수로, 가장가까운 not-found.js를 찾아서 표기한다.
     if (!meal) {
         notFound();
