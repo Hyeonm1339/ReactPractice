@@ -1,13 +1,19 @@
+
+import {Suspense} from 'react';
 import classes from './page.module.css'
 import Link from "next/link";
 import MealsGrid from "@/components/meals/meals-grid";
 import {getMeals} from "@/lib/meal";
+import React from "react";
+import MealsLoadingPage from "@/app/meals/loading-out";
+
+async function Meals(){
+    const meals = await getMeals();
+    return <MealsGrid meals={meals}/>
+}
 
 //서버컴포넌트는 async처리가 가능하다.
-export default async function MealsPage() {
-
-    const meals = await getMeals();
-
+export default function MealsPage() {
     return (
         <>
             <header className={classes.header}>
@@ -21,7 +27,9 @@ export default async function MealsPage() {
                 </p>
             </header>
             <main className={classes.main}>
-                <MealsGrid meals={meals}/>
+                <Suspense fallback={<p className={classes.loading}>Fetching meals...</p>}>
+                    <Meals/>
+                </Suspense>
             </main>
         </>
     )
