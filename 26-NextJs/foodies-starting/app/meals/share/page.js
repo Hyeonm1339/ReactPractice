@@ -1,7 +1,28 @@
 import classes from './page.module.css';
 import ImagePicker from "@/components/meals/image-picker";
+import {shareMeal} from "@/lib/action";
+import MealsFormSubmit from "@/components/meals/meals-form-submit";
 
 export default function ShareMealPage() {
+
+    // async function shareMeal(formData) {
+    //     //'use client'와는 다르게 Server Action을 생성해서, 서버에서만 실행될 수 있게 보장된다. (async 필수)
+    //     //JSP JSTL과같은 느낌..? NextJS가 알아서 경로를 설정해서 처리하게 도와준다.(클라이언트가 아닌 무조건 서버측임)
+    //     'use server';
+    //
+    //     const meal = {
+    //         title: formData.get("title"),
+    //         summary: formData.get("summary"),
+    //         instructions: formData.get("instructions"),
+    //         image: formData.get("image"),
+    //         name: formData.get("name"),
+    //         creator_email: formData.get("email")
+    //     }
+    //
+    //     console.log(meal)
+    // }
+
+
     return (
         <>
             <header className={classes.header}>
@@ -11,24 +32,24 @@ export default function ShareMealPage() {
                 <p>Or any other meal you feel needs sharing!</p>
             </header>
             <main className={classes.main}>
-                <form className={classes.form}>
+                <form className={classes.form} action={shareMeal}>
                     <div className={classes.row}>
                         <p>
                             <label htmlFor="name">Your name</label>
-                            <input type="text" id="name" name="name" required />
+                            <input type="text" id="name" name="name" required/>
                         </p>
                         <p>
                             <label htmlFor="email">Your email</label>
-                            <input type="email" id="email" name="email" required />
+                            <input type="email" id="email" name="email" required/>
                         </p>
                     </div>
                     <p>
                         <label htmlFor="title">Title</label>
-                        <input type="text" id="title" name="title" required />
+                        <input type="text" id="title" name="title" required/>
                     </p>
                     <p>
                         <label htmlFor="summary">Short Summary</label>
-                        <input type="text" id="summary" name="summary" required />
+                        <input type="text" id="summary" name="summary" required/>
                     </p>
                     <p>
                         <label htmlFor="instructions">Instructions</label>
@@ -39,9 +60,9 @@ export default function ShareMealPage() {
                             required
                         ></textarea>
                     </p>
-                    <ImagePicker/>
+                    <ImagePicker label="Your Image" name="image"/>
                     <p className={classes.actions}>
-                        <button type="submit">Share Meal</button>
+                        <MealsFormSubmit/>
                     </p>
                 </form>
             </main>
