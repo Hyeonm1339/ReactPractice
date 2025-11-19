@@ -5,7 +5,11 @@ import Link from "next/link";
 import MealsGrid from "@/components/meals/meals-grid";
 import {getMeals} from "@/lib/meal";
 import React from "react";
-import MealsLoadingPage from "@/app/meals/loading-out";
+
+export const metadata = {
+    title: '모든 음식',
+    description: '커뮤니티에서 공유한 맛있는 식사를 둘러보세요.',
+};
 
 async function Meals(){
     const meals = await getMeals();
