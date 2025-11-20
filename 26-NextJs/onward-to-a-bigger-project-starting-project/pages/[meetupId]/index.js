@@ -1,10 +1,16 @@
 import MeetupDetail from "@/components/meetups/MeetupDetail";
 import {MongoClient, ObjectId} from "mongodb";
+import Head from "next/head";
 
 export default function MeeupDetails(props) {
     // const router = useRouter();
     // const meetupId = router.query.meetupId;
     return <>
+        <Head>
+            <title>{props.meetupData.title}</title>
+            <meta name="descriptiopn"
+                  content={props.meetupData.description}/>
+        </Head>
         <MeetupDetail
             image={props.meetupData.image}
             title={props.meetupData.title}
