@@ -44,7 +44,7 @@ export default function HomePage(props) {
 export async function getStaticProps() {
     //여기에 작성하는 모든코드는 클라이언트에 표기되지 않는다, (빌드중에만 실행된다. 서버에도, 클라이언트에도 작성되지 않는다.)
 
-    const uri = "mongodb+srv://jhjimess_db_user:XUBRhmVJSZ7w5DJY@cluster0.dr7andv.mongodb.net/meetups?appName=Cluster0";
+    const uri = "mongodb+srv://jhjimess_db_user:FlZzHUV9DpZhKlbM@cluster0.dr7andv.mongodb.net/meetups?appName=Cluster0";
     const client = new MongoClient(uri);
 
     const db = client.db();

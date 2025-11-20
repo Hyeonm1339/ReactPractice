@@ -21,7 +21,7 @@ export default function MeeupDetails(props) {
 }
 
 export async function getStaticPaths() {
-    const uri = "mongodb+srv://jhjimess_db_user:XUBRhmVJSZ7w5DJY@cluster0.dr7andv.mongodb.net/meetups?appName=Cluster0";
+    const uri = "mongodb+srv://jhjimess_db_user:FlZzHUV9DpZhKlbM@cluster0.dr7andv.mongodb.net/meetups?appName=Cluster0";
     const client = new MongoClient(uri);
     const db = client.db();
 
@@ -50,7 +50,7 @@ export async function getStaticProps(context) {
     //데이터를 조회하는 코드를 작성한다.
     const meetupId = context.params.meetupId;
 
-    const uri = "mongodb+srv://jhjimess_db_user:XUBRhmVJSZ7w5DJY@cluster0.dr7andv.mongodb.net/meetups?appName=Cluster0";
+    const uri = "mongodb+srv://jhjimess_db_user:FlZzHUV9DpZhKlbM@cluster0.dr7andv.mongodb.net/meetups?appName=Cluster0";
     const client = new MongoClient(uri);
     const db = client.db();
 
