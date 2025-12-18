@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 
-import ProductsProvider from './context/products.context';
+// import ProductsProvider from './context/products.context';
 
 import './index.css';
 import App from './App';
-import productReducer from './store/reducers/products';
+// import productReducer from './store/reducers/products';
+import configureStore from "./hooks-store/product-store";
 
 // const rootReducer = combineReducers({
 //   shop: productReducer
@@ -14,11 +15,11 @@ import productReducer from './store/reducers/products';
 //
 // const store = createStore(rootReducer);
 
+configureStore()
+
 ReactDOM.render(
-    <ProductsProvider>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
-    </ProductsProvider>,
+    <BrowserRouter>
+        <App/>
+    </BrowserRouter>,
     document.getElementById('root')
 );
