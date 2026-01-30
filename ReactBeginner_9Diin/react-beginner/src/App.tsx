@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useMemo, useRef, useState} from "react";
 
 
 const getAverage = (numbers: number[]) => {
@@ -78,7 +78,6 @@ function App() {
                 <b>별명: {nickName}</b>
             </div>
         </div>)
-        */
 
 
     const [list, setList] = useState<number[]>([])
@@ -115,6 +114,27 @@ function App() {
             </div>
         </div>
     )
+        */
+    //useRef 훅은 함수 컴포넌트에서 ref라는 속성을 쉽게 사용할 수 있도록 도와주는 도구이다.
+    //컴포넌트 내에서 변하지 않는 값을 유지하거나 DOM 요소에 직접 접근할 때 사용하는 훅이다.
+
+    //저장된 값은 컴포넌트가 리렌더리되어도 유지되며, 값이 바뀌어도 리렌더링을 일으키지 않는다.
+    //ref 속성은 JSX, TSX에서 요소나 컴포넌트에 참조를 연결하는 역할을 한다.
+
+    const inputElement = useRef<HTMLInputElement | null>(null);
+    const fileElement = useRef<HTMLInputElement | null>(null);
+
+    const handleClick = () =>{
+        inputElement.current?.focus();
+        fileElement.current?.click();
+    }
+
+    return (
+        <div>
+            <input type="text" ref={inputElement}/>
+            <input type="file" ref={fileElement}/>
+            <button onClick={handleClick}>등록</button>
+        </div>)
 }
 
 export default App
