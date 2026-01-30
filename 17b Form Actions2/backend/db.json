@@ -1,6 +1,20 @@
 {
   "opinions": [
     {
+      "id": 1769752947887,
+      "votes": 6,
+      "userName": "김현민",
+      "title": "등록테스트진행합니다.",
+      "body": "안녕하세요.\n반갑습니다 ㅎㅎㅎㅎ"
+    },
+    {
+      "id": 1769752558275,
+      "votes": 1,
+      "userName": "Max",
+      "title": "등록 테스트진행",
+      "body": "반갑습니다.안녕하세요"
+    },
+    {
       "id": 1,
       "userName": "Maximilian Schwarzmüller",
       "title": "Do yourself a favor and learn React!",

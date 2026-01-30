@@ -1,7 +1,12 @@
-import {useActionState} from 'react';
+import {useActionState, useContext} from 'react';
+import {OpinionsContext} from "../store/opinions-context.jsx";
+import Submit from "./Submit.jsx";
 
 export function NewOpinion() {
-    function shareOpinionAction(preveState, formData) {
+    const {addOpinion} = useContext(OpinionsContext);
+
+
+    async function shareOpinionAction(preveState, formData) {
         const title = formData.get('title');
         const body = formData.get('body');
         const userName = formData.get('userName');
@@ -30,11 +35,14 @@ export function NewOpinion() {
         }
 
         //서브밋처리는 이따가 진행.
+        await addOpinion({title, body, userName});
 
         return {errors: null};
     }
 
-    const [formState, formAction] = useActionState(shareOpinionAction, {errors: null});
+    const [formState, formAction] = useActionState(
+        shareOpinionAction, {errors: null}
+    );
 
     return (
         <div id="new-opinion">
@@ -43,7 +51,8 @@ export function NewOpinion() {
                 <div className="control-row">
                     <p className="control">
                         <label htmlFor="userName">Your Name</label>
-                        <input type="text" id="userName" name="userName" defaultValue={formState.enteredValues?.userName}/>
+                        <input type="text" id="userName" name="userName"
+                               defaultValue={formState.enteredValues?.userName}/>
                     </p>
 
                     <p className="control">
@@ -61,10 +70,8 @@ export function NewOpinion() {
                         {formState.errors.map(error => <li key={error}>{error}</li>)}
                     </ul>
                 }
+                <Submit/>
 
-                <p className="actions">
-                    <button type="submit">Submit</button>
-                </p>
             </form>
         </div>
     );
