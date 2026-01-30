@@ -1,140 +1,61 @@
-import {useCallback, useMemo, useRef, useState} from "react";
-
-
-const getAverage = (numbers: number[]) => {
-    if (numbers.length === 0) {
-        return 0;
-    } else {
-        return numbers.reduce((acc, cur) => acc + cur) / numbers.length
-    }
-}
+import {AppHeader, AppFooter, AppSidebar} from "@/components/common";
+import {ThemeProvider} from "@/components/theme-provider.tsx";
+import {SkeletonHotTopic, SkeletonNewTopic} from "@/components/skeleton";
 
 function App() {
-    /*
-    //useState => Hooks
-    //useState는 리액트에서 가장 기본적인 훅(Hook)이며, 컴포넌트에서 가변적인 상태를 지닐 수 있게 해준다.
-    // 해당 함수는 배열을 반환하며, 첫번째 배열은 상태 값, 두번째 요소는 상태 값을 변경(설정)하는 함수를 반환한다.
-    const [value, setValue] = useState<number>(0);
-    const [name, setName] = useState<string>('현민');
-    const [nickName, setNickName] = useState<string>('별명');
-
-    const increment = () => {
-        setValue((prevState) => {
-            return prevState + 1
-        })
-    }
-    const decrement = () => {
-        setValue((prevState) => {
-            return prevState - 1
-        })
-    }
-
-    const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value)
-    }
-    const onChangeNickName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNickName(event.target.value)
-    }
-
-        return (
-            <div>
-                <p>
-                    현재 카운터 값은 : <b>{value}</b>
-                </p>
-                <button onClick={increment}>1 증가
-                </button>
-                <button onClick={decrement}>1 감소
-                </button>
-
-                <div>
-                    <input type="text" value={name} onChange={onChangeName}/>
-                    <input type="text" value={nickName} onChange={onChangeNickName}/>
-                </div>
-
-                <div>
-                    <b>이름: {name}</b>
-                    <b>별명: {nickName}</b>
-                </div>
-            </div>
-        )
-    //useEffect는 리액트 컴포넌트가 랜더링 될 때마다 특정 작업을 수행하도록 설정할 수 있는 훅 이다.
-    //마운트가 될때, 실행하고 싶을 때 사용한다.
-    //마운트란 -> 리액트 DOM에 우리가 return 키워드 하단에 작성한 HTML, CSS영역 즉 UI가 붙었을때
-    //맨 처음 렌더링 될때만 시행하고, 업데이트 될때는 실행하지 않으려면 빈배열을 전달해서 사용이 가능하다.
-
-    //특정값이 업데이트 될 때만 실행하고 싶을 때, (특정값이 변경될때만 호출하고 싶은 경우)
-    //두번째 파라미터(매개변수)에 특정값을 넣어서 처리한다. (디펜던시라고 칭함)
-
-    useEffect(() => {
-        console.log(`이름: ${name}, 별명: ${nickName}`);
-    },[name])
-    return (
-        <div>
-            <input type="text" value={name} onChange={onChangeName}/>
-            <input type="text" value={nickName} onChange={onChangeNickName}/>
-
-            <div>
-                <b>이름: {name}</b>
-                <b>별명: {nickName}</b>
-            </div>
-        </div>)
-
-
-    const [list, setList] = useState<number[]>([])
-    // input태그에 입력된 숫자를 사용한다.
-    const [number, setNumber] = useState<string>("");
-
-    const onInsert = useCallback(() => {
-        console.log('onInsert')
-        //concat : 두 개 이상의 배열을 병합하는 데 사용한다. 기존 배열을 변경하지 않고 새 배열을 반환한다.
-        const newList = list.concat(parseInt(number));
-        setList(newList);
-        setNumber("");
-    }, [number,list]);
-
-    const average = useMemo(() => getAverage(list), [list]);
-
-    //useCallback 이란 useMemo와 상당히 비슷한 함수이다. 주로 렌더링 성능을 최적화 하기위해 사용한다.
-    //만들어 두었던 함수를 재사용한다.
-
-    //useCallback은 첫 번째 파라미터에 함수를 넣어주고, 두번째 파라미터에 배열을 넣는다(디펜던시)
-    const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setNumber(event.target.value)
-    }, []);
 
     return (
-        <div>
-            <input type="text" value={number} onChange={onChange}/>
-            <button onClick={onInsert}>등록</button>
-            <ul>
-                {list.map((item: number, index: number) => (<li key={index}>{item}</li>))}
-            </ul>
-            <div>
-                <b>형균 값: {average}</b>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <div className="page">
+                <AppHeader/>
+                <div className="container">
+                    <main className="w-full h-full min-h-[720px] flex p-6 gap-6">
+                        {/*카테고리 사이드바*/}
+                        <AppSidebar/>
+                        {/*토픽 콘텐츠*/}
+                        <section className="flex-1 flex flex-col gap-12">
+                            {/*핫토픽*/}
+                            <div className="w-full flex flex-col gap-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <img src="/assets/react.svg" alt="@IMG" className="w-7 h-7"/>
+                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">HOT 토픽</h4>
+                                    </div>
+                                    <p className="md:text-base text-muted-foreground ">지금 가장 주목받는 주제들을 살펴보고, 다양한 관점의
+                                        인사이트를 얻어가세요.</p>
+                                </div>
+                                <div className="grid grid-cols-4 gap-6">
+                                    <SkeletonHotTopic/>
+                                    <SkeletonHotTopic/>
+                                    <SkeletonHotTopic/>
+                                    <SkeletonHotTopic/>
+                                </div>
+                            </div>
+                            {/*뉴토픽*/}
+                            <div className="w-full flex flex-col gap-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <img src="/assets/react.svg" alt="@IMG" className="w-7 h-7"/>
+                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">NEW 토픽</h4>
+                                    </div>
+                                    <p className="md:text-base text-muted-foreground">새로운 시선으로, 새로운 이야기를 시작하세요. 지금 바로
+                                        당신만의 토픽을 작성해 보세요.</p>
+                                </div>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <SkeletonNewTopic/>
+                                    <SkeletonNewTopic/>
+                                    <SkeletonNewTopic/>
+                                    <SkeletonNewTopic/>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+                <AppFooter/>
             </div>
-        </div>
+        </ThemeProvider>
+
     )
-        */
-    //useRef 훅은 함수 컴포넌트에서 ref라는 속성을 쉽게 사용할 수 있도록 도와주는 도구이다.
-    //컴포넌트 내에서 변하지 않는 값을 유지하거나 DOM 요소에 직접 접근할 때 사용하는 훅이다.
-
-    //저장된 값은 컴포넌트가 리렌더리되어도 유지되며, 값이 바뀌어도 리렌더링을 일으키지 않는다.
-    //ref 속성은 JSX, TSX에서 요소나 컴포넌트에 참조를 연결하는 역할을 한다.
-
-    const inputElement = useRef<HTMLInputElement | null>(null);
-    const fileElement = useRef<HTMLInputElement | null>(null);
-
-    const handleClick = () =>{
-        inputElement.current?.focus();
-        fileElement.current?.click();
-    }
-
-    return (
-        <div>
-            <input type="text" ref={inputElement}/>
-            <input type="file" ref={fileElement}/>
-            <button onClick={handleClick}>등록</button>
-        </div>)
 }
 
 export default App
