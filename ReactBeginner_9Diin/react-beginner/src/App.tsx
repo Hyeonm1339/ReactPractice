@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 
 
 const getAverage = (numbers: number[]) => {
@@ -85,18 +85,27 @@ function App() {
     // input태그에 입력된 숫자를 사용한다.
     const [number, setNumber] = useState<string>("");
 
-    const onInsert = () => {
+    const onInsert = useCallback(() => {
+        console.log('onInsert')
         //concat : 두 개 이상의 배열을 병합하는 데 사용한다. 기존 배열을 변경하지 않고 새 배열을 반환한다.
         const newList = list.concat(parseInt(number));
         setList(newList);
         setNumber("");
-    };
+    }, [number,list]);
 
     const average = useMemo(() => getAverage(list), [list]);
 
+    //useCallback 이란 useMemo와 상당히 비슷한 함수이다. 주로 렌더링 성능을 최적화 하기위해 사용한다.
+    //만들어 두었던 함수를 재사용한다.
+
+    //useCallback은 첫 번째 파라미터에 함수를 넣어주고, 두번째 파라미터에 배열을 넣는다(디펜던시)
+    const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setNumber(event.target.value)
+    }, []);
+
     return (
         <div>
-            <input type="text" value={number} onChange={(e) => setNumber(e.target.value)}/>
+            <input type="text" value={number} onChange={onChange}/>
             <button onClick={onInsert}>등록</button>
             <ul>
                 {list.map((item: number, index: number) => (<li key={index}>{item}</li>))}
