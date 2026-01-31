@@ -1,4 +1,5 @@
 import {Separator} from "@/components/ui";
+import {NavLink, useNavigate} from "react-router";
 
 function AppHeader() {
     return (
@@ -14,8 +15,8 @@ function AppHeader() {
                     </div>
                 </div>
                 {/*로그인UI*/}
-                <div className="font-semibold text-muted-foreground hover:text-white transition-all duration-500">로그인
-                </div>
+                <NavLink to={"sign-in"}
+                         className="font-semibold text-muted-foreground hover:text-white transition-all duration-500">로그인</NavLink>
             </div>
         </header>
     )
