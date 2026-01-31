@@ -11,7 +11,11 @@ import {
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form";
 import * as z from "zod"
-import {NavLink} from "react-router";
+import {NavLink, useNavigate} from "react-router";
+import supabase from "@/lib/supabase.ts";
+import {toast} from "sonner";
+import {useAuthStore} from "@/store";
+import {useShallow} from "zustand/react/shallow";
 
 const formSchema = z.object({
     email: z.email({
@@ -23,6 +27,7 @@ const formSchema = z.object({
 })
 
 export default function SignIn() {
+    const navigate = useNavigate();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -31,20 +36,53 @@ export default function SignIn() {
         }
     })
 
-    const onSubmit = () => {
-        console.log('로그인버튼 클릭')
+    const {setId, setEmail, setRole} = useAuthStore(useShallow((state) => ({
+        setId: state.setId,
+        setEmail: state.setEmail,
+        setRole: state.setRole,
+    })));
+
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const {data: {user, session}, error} = await supabase.auth.signInWithPassword({
+                email: values.email,
+                password: values.password,
+                // options: {
+                //     emailRedirectTo: 'https://example.com/welcome',
+                // },
+            })
+
+            if (error) {
+                //에러처리
+                toast.error(error.message)
+            }
+            //회원가입 성공
+            if (user && session) {
+                //data.user - 유저정보
+                //data.session - 세션정보
+                setId(user.id);
+                setEmail(user.email as string);
+                setRole(user.role as string);
+                toast.success('로그인에 성공하였습니다.')
+                navigate('/');
+            }
+        } catch (error) {
+            throw new Error(`${error}`)
+        }
     }
     return (
         <main className="w-full h-full min-h-[720px] flex items-center justify-center p-6 gap-6">
             <div className="w-100 max-w-100 flex flex-col px-6 gap-6">
                 <div className="flex flex-col">
                     <h4 className="scroll-m-20 text-lg font-semibold tracking-tight text-center">로그인</h4>
-                    <p className="text-muted-foreground">로그인을 위한 정보를 입력해주세요.</p>
+                    <p className="text-muted-foreground text-center">로그인을 위한 정보를 입력해주세요.</p>
                 </div>
                 <div className="grid gap-3">
                     <Button type="button" variant={"secondary"}>
                         {/*소셜로그인*/}
-                        <img src="/assets/icons/social/google.svg" alt="@GOOGLE-LOGO" className="w-[18px] h-[18px] mr-1"/>
+                        <img src="/assets/icons/social/google.svg" alt="@GOOGLE-LOGO"
+                             className="w-[18px] h-[18px] mr-1"/>
                         구글 로그인
                     </Button>
                     {/*경계선*/}
@@ -76,7 +114,7 @@ export default function SignIn() {
                                            <FormItem>
                                                <FormLabel>비밀번호</FormLabel>
                                                <FormControl>
-                                                   <Input placeholder="비밀번호를 입력하세요." {...field}/>
+                                                   <Input type="password" placeholder="비밀번호를 입력하세요." {...field}/>
                                                </FormControl>
                                                <FormMessage/>
                                            </FormItem>
@@ -87,7 +125,7 @@ export default function SignIn() {
                                 </Button>
                                 <div className="text-center">
                                     계정이 없으신가요?
-                                    <NavLink to={"sign-up"} className="underline ml-1">회원가입</NavLink>
+                                    <NavLink to={"/sign-up"} className="underline ml-1">회원가입</NavLink>
                                 </div>
                             </div>
                         </form>
