@@ -36,11 +36,13 @@ export default function SignIn() {
         }
     })
 
-    const {setId, setEmail, setRole} = useAuthStore(useShallow((state) => ({
-        setId: state.setId,
-        setEmail: state.setEmail,
-        setRole: state.setRole,
-    })));
+    // const {setId, setEmail, setRole} = useAuthStore(useShallow((state) => ({
+    //     setId: state.setId,
+    //     setEmail: state.setEmail,
+    //     setRole: state.setRole,
+    // })));
+
+    const setUser = useAuthStore((state) => state.setUser);
 
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -61,9 +63,14 @@ export default function SignIn() {
             if (user && session) {
                 //data.user - 유저정보
                 //data.session - 세션정보
-                setId(user.id);
-                setEmail(user.email as string);
-                setRole(user.role as string);
+                // setId(user.id);
+                // setEmail(user.email as string);
+                // setRole(user.role as string);
+                setUser({
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                })
                 toast.success('로그인에 성공하였습니다.')
                 navigate('/');
             }

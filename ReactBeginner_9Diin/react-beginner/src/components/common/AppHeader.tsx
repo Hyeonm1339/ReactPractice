@@ -6,8 +6,12 @@ import {useShallow} from "zustand/react/shallow";
 function AppHeader() {
     const navigate = useNavigate();
 
-    const {email, reset} = useAuthStore(useShallow((state) => ({
-        email: state.email,
+    // const {email, reset} = useAuthStore(useShallow((state) => ({
+    //     email: state.email,
+    //     reset: state.reset
+    // })));
+    const {user, reset} = useAuthStore(useShallow((state) => ({
+        user: state.user,
         reset: state.reset
     })));
 
@@ -26,10 +30,10 @@ function AppHeader() {
                     </div>
                 </div>
                 {/*로그인UI*/}
-                {email ?
+                {user.id ?
                     (
                         <div className="flex items-center gap-5">
-                            <span>{email}</span>
+                            <span>{user.email}</span>
                             <Separator orientation={"vertical"} className="!h-4"/>
                             <span onClick={reset}>로그아웃</span>
                         </div>

@@ -9,19 +9,68 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.tsx";
+import {AppEditor} from "@/components/common";
+import {useParams} from "react-router";
+import {useState} from "react";
+import {toast} from "sonner";
+import supabase from "@/lib/supabase.ts";
+import {useAuthStore} from "@/store";
+import type {Block} from "@blocknote/core";
+import {AppFileUpload} from "@/components/common/AppFileUpload.tsx";
 
 const CreateTopic = () => {
+    const {topicId} = useParams();
+    const user = useAuthStore(state => state.user);
+    const [title, setTitle] = useState<string>("");
+    const [content, setContent] = useState<Block[]>([]);
+    const [category, setCategory] = useState<string>("");
+    const [thumbnail, setThumbnail] = useState<File | string | null>(null);
+
+    const handleSave = async () => {
+        if (!title || !content || !category) {
+            toast.warning("제목, 본문, 카테고리, 썸네일을 기입하세요.");
+            return false;
+        }
+        const {data, error} = await supabase
+            .from('topic')
+            .update([
+                {
+                    title,
+                    content,
+                    category,
+                    thumbnail,
+                    author: user.id, //작성자id
+                }
+            ])
+            .eq('id', topicId)
+            .select()
+
+        if (data) {
+            toast.success("작성 중인 토픽을 저장하였습니다.");
+            return;
+        }
+    }
+
+    const handlePublish = async () => {
+        if (!title || !content || !category || thumbnail) {
+            toast.warning("제목, 본문, 카테고리, 썸네일은 필수값 입니다.");
+            return false;
+        }
+    }
+
     return (
         <main className="w-full h-full min-h-[1024px] flex gap-6 p-6">
             <div className="fixed right-1/2 bottom-10 translate-x-1/2 z-20 flex items-center gap-2">
                 <Button variant={"outline"} size={"icon"}>
                     <ArrowLeft/>
                 </Button>
-                <Button variant={"outline"} className="w-22 !bg-yellow-800/50">
+                <Button type="button" variant={"outline"} className="w-22 !bg-yellow-800/50"
+                        onClick={handleSave}>
                     <Save/>
                     저장
                 </Button>
-                <Button variant={"outline"} className="w-22 !bg-emerald-800/50">
+                <Button type="button" variant={"outline"} className="w-22 !bg-emerald-800/50"
+                        onClick={handlePublish}>
                     <BookOpenCheck/>
                     발행
                 </Button>
@@ -38,6 +87,7 @@ const CreateTopic = () => {
                         <Label className="text-muted-foreground">제목</Label>
                     </div>
                     <Input placeholder="토픽 제목을 입력하세요."
+                           value={title} onChange={(e) => setTitle(e.target.value)}
                            className="h-16 pl-6 text-lg placeholder:text-lg placeholder:font-semibold border-0"/>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -45,7 +95,9 @@ const CreateTopic = () => {
                         <Asterisk size={14} className="text-[#F96859]"/>
                         <Label className="text-muted-foreground">본문</Label>
                     </div>
-                    <Skeleton className="w-full h-100"/>
+                    {/*<Skeleton className="w-full h-100"/>*/}
+                    {/*BlockNote Text Editor UI부분*/}
+                    <AppEditor setContent={setContent}/>
                 </div>
             </section>
             {/*카테고리 및 썸네일 들옥*/}
@@ -59,7 +111,7 @@ const CreateTopic = () => {
                         <Asterisk size={14} className="text-[#F96859]"/>
                         <Label className="text-muted-foreground">카테고리</Label>
                     </div>
-                    <Select>
+                    <Select onValueChange={(value) => setCategory(value)}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="토픽 주제 선택"/>
                         </SelectTrigger>
@@ -81,8 +133,9 @@ const CreateTopic = () => {
                         <Asterisk size={14} className="text-[#F96859]"/>
                         <Label className="text-muted-foreground">썸네일</Label>
                     </div>
-                    <Skeleton className="w-full aspect-video"/>
-                    <Button variant={"outline"} className="border-0">
+                    {/*썸네일 UI 영역*/}
+                    <AppFileUpload file={thumbnail} onChange={setThumbnail}/>
+                    <Button variant={"outline"} className="border-0" onClick={() => setThumbnail(null)}>
                         <ImageOff/>
                         썸네일 제거
                     </Button>

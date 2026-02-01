@@ -3,16 +3,52 @@ import {SkeletonHotTopic, SkeletonNewTopic} from "@/components/skeleton";
 import {Button} from "@/components/ui";
 import {PencilLine} from "lucide-react";
 import {useNavigate} from "react-router";
+import {useAuthStore} from "@/store";
+import {toast} from "sonner";
+import supabase from "@/lib/supabase.ts";
 
 function Index() {
+    //유저 기본정보 받아오기.
+    const user = useAuthStore(state => state.user);
     const navigate = useNavigate();
+
+    //토픽생성버튼 클릭 이벤트
+    const handleTopikCreate = async () => {
+        if (!user.id || !user.email || !user.role) {
+            toast.warning("토픽 작성을 하시려면 로그인을 진행해주세요.");
+            return;
+        }
+        const {data, error} = await supabase
+            .from('topic')
+            .insert([
+                {
+                    author: user.id, //작성자id
+                    title: null,
+                    content: null,
+                    category: null,
+                    thumbnail: null,
+                    status: "temp",
+                }
+            ])
+            .select()
+
+        if (error) {
+            toast.error(error.message);
+            return false;
+        }
+
+        if (data) {
+            toast.success("토픽을 생성하였습니다.");
+            navigate(`/topics/${data[0].id as string}/create`);
+        }
+    }
 
     return (
         <main className="w-full h-full min-h-[720px] flex p-6 gap-6">
             {/*토픽 작성 버튼*/}
             <div className="fixed right-1/2 bottom-10 translate-x-1/2 z-20 items-center">
                 <Button variant={"destructive"} className="!py-5 !px-6 rounded-full"
-                        onClick={() => navigate('/topics/create')}>
+                        onClick={handleTopikCreate}>
                     <PencilLine/>
                     나만의 토픽 작성
                 </Button>
